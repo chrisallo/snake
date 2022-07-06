@@ -19,7 +19,7 @@ Snake is a well-known classic arcade game that a little snake grows by eating do
 ## Advanced
 
 - Every time the point increases by `10`, generate a bomb that the snake explodes when he eats. Eating a bomb stops the game and show `Game over` message and reset the game in 5s.
-- When the point goes over `30`, increase the speed of the snake.
+- When the point goes over `20`, increase the speed of the snake.
 
 ## How to run
 
