@@ -58,7 +58,9 @@ export class Game {
     return this.state === GameState.RUNNING;
   }
   generateSnakeFood() {
-    // TODO:
+    if (this.isPlaying) {
+      // TODO:
+    }
   }
   gainPoint(inc = 1) {
     this.point += inc;
