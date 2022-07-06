@@ -20,6 +20,7 @@ export class Snake {
     for (let i = 0; i < this.length; i++) {
       this.tail.push([startX, startY + i]);
     }
+    this.willGrow = false;
   }
   hasTailOf(x, y) {
     return this.tail.slice(1)
@@ -46,8 +47,12 @@ export class Snake {
       this.direction = direction;
     }
   }
+  grow() {
+    this.willGrow = true;
+  }
   move() {
-    const [lastX, lastY] = this.tail.pop();
+    const grown = this.willGrow;
+    const [lastX, lastY] = !grown ? this.tail.pop() : this.tail[this.tail.length - 1];
     const [firstX, firstY] = this.tail[0];
     let nextX, nextY;
     switch (this.direction) {
@@ -69,9 +74,11 @@ export class Snake {
       }
     }
     this.tail.unshift([nextX, nextY]);
+    this.willGrow = false;
     return {
       head: [nextX, nextY],
       footprint: [lastX, lastY],
+      grown,
     };
   }
 }

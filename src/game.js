@@ -89,12 +89,12 @@ export class Game {
       this.gainPoint(0);
 
       this.tick = setInterval(() => {
-        const { head, footprint } = this.snake.move();
+        const { head, footprint, grown } = this.snake.move();
         if (this.board.includes(...head)
           && this.board.includes(...footprint)
           && !this.snake.hasTailOf(...head)) {
           this.board.setBlockAs(...head, BlockType.SNAKE);
-          this.board.setBlockAs(...footprint, BlockType.EMPTY);
+          if (!grown) this.board.setBlockAs(...footprint, BlockType.EMPTY);
 
           if (this.snake.hasEaten(...this.food)) {
             this.gainPoint();
