@@ -25,6 +25,10 @@ export class Snake {
     return this.tail.slice(1)
       .some(([tailX, tailY]) => tailX === x && tailY === y);
   }
+  hasEaten(x, y) {
+    const [headX, headY] = this.tail[0];
+    return headX === x && headY === y;
+  }
   isGoingOppositeOf(direction) {
     switch (direction) {
       case SnakeDirection.UP:

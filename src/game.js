@@ -19,6 +19,7 @@ export class Game {
   }) {
     this.board = new Board({});
     this.snake = null;
+    this.food = [-1, -1];
     this.reset();
 
     this.point = 0;
@@ -56,6 +57,9 @@ export class Game {
   get isPlaying() {
     return this.state === GameState.RUNNING;
   }
+  generateSnakeFood() {
+    // TODO:
+  }
   gainPoint(inc = 1) {
     this.point += inc;
     this._message(`You've got ${this.point} points.`);
@@ -82,7 +86,6 @@ export class Game {
   start() {
     if (!this.isPlaying) {
       this.state = GameState.RUNNING;
-      this.point = 0;
       this.gainPoint(0);
 
       this.tick = setInterval(() => {
@@ -92,6 +95,11 @@ export class Game {
           && !this.snake.hasTailOf(...head)) {
           this.board.setBlockAs(...head, BlockType.SNAKE);
           this.board.setBlockAs(...footprint, BlockType.EMPTY);
+
+          if (this.snake.hasEaten(...this.food)) {
+            this.gainPoint();
+            this.generateSnakeFood();
+          }
         } else {
           this.gameOver();
         }
@@ -116,6 +124,10 @@ export class Game {
     for (const [x, y] of this.snake.tail) {
       this.board.setBlockAs(x, y, BlockType.SNAKE);
     }
+
+    this.point = 0;
+
+    this.generateSnakeFood();
     this.board.render();
     this._message('Press spacebar to start.');
   }
