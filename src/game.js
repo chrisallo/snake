@@ -3,7 +3,7 @@ import { Board } from './component/board.js';
 import { BlockType } from './component/boardBlock.js';
 import { Snake, SnakeDirection } from './component/snake.js';
 
-const INITIAL_GAME_SPEED = 500;
+const DEFAULT_TICK_INTERVAL = 500;
 const DEFAULT_SNAKE_LENGTH_TO_WIN = 40;
 
 const GameState = {
@@ -25,8 +25,8 @@ export class Game {
     this.point = 0;
     this.pointToWin = pointToWin;
 
-    this.speed = INITIAL_GAME_SPEED;
     this.tick = null;
+    this.tickInterval = DEFAULT_TICK_INTERVAL;
 
     document.addEventListener('keydown', (e) => {
       switch (e.key) {
@@ -106,7 +106,7 @@ export class Game {
           this.gameOver();
         }
         this.board.render();
-      }, this.speed);
+      }, this.tickInterval);
     }
   }
   stop() {
