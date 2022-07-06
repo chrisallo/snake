@@ -81,6 +81,7 @@ export class Game {
     if (!this.isPlaying) {
       this.state = GameState.RUNNING;
       this.gainPoint(0);
+      this.generateSnakeFood();
 
       this.tick = setInterval(() => {
         const { head, footprint, grown } = this.snake.move();
@@ -108,8 +109,6 @@ export class Game {
     }
 
     this.point = 0;
-
-    this.generateSnakeFood();
     this.board.render();
     this._message('Press spacebar to start.');
   }
