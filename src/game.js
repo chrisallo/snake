@@ -60,7 +60,19 @@ export class Game {
   }
   generateSnakeFood() {
     if (this.isPlaying) {
-      // TODO:
+      const emptyBlocks = [];
+      for (const i in this.board.blocks) {
+        const row = this.board.blocks[i];
+        for (const j in row) {
+          const block = row[j];
+          if (block.type === BlockType.EMPTY) {
+            emptyBlocks.push([parseInt(i), parseInt(j)]);
+          }
+        }
+      }
+      const random = Math.floor(Math.random() * emptyBlocks.length);
+      const [x, y] = this.food = emptyBlocks[random];
+      this.board.setBlockAs(x, y, BlockType.FOOD);
     }
   }
   gainPoint(inc = 1) {
@@ -75,16 +87,39 @@ export class Game {
     this.stop();
     this._message(`Game over.`);
     
-    // TODO:
+    let restartAfter = 5;
+    const restart = setInterval(() => {
+      restartAfter--;
+      if (restartAfter > 0) {
+        this._message(`The game restarts after ${restartAfter}s...`);
+      } else {
+        clearInterval(restart);
+        this.reset();
+      }
+    }, 1000);
   }
   start() {
     if (!this.isPlaying) {
       this.state = GameState.RUNNING;
+      this.generateSnakeFood();
       this.gainPoint(0);
 
       this.tick = setInterval(() => {
         const { head, footprint, grown } = this.snake.move();
-        // TODO:
+        if (this.board.includes(...head)
+          && this.board.includes(...footprint)
+          && !this.snake.hasTailOf(...head)) {
+          this.board.setBlockAs(...head, BlockType.SNAKE);
+          if (!grown) this.board.setBlockAs(...footprint, BlockType.EMPTY);
+          
+          if (this.snake.hasEaten(...this.food)) {
+            this.snake.grow();
+            this.gainPoint();
+            this.generateSnakeFood();
+          }
+        } else {
+          this.gameOver();
+        }
         this.board.render();
       }, this.tickInterval);
     }
@@ -108,8 +143,6 @@ export class Game {
     }
 
     this.point = 0;
-
-    this.generateSnakeFood();
     this.board.render();
     this._message('Press spacebar to start.');
   }
