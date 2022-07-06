@@ -15,6 +15,7 @@ const GameState = {
 
 export class Game {
   constructor({
+    tickInterval = DEFAULT_TICK_INTERVAL,
     pointToWin = DEFAULT_SNAKE_LENGTH_TO_WIN,
   }) {
     this.board = new Board({});
@@ -26,7 +27,7 @@ export class Game {
     this.pointToWin = pointToWin;
 
     this.tick = null;
-    this.tickInterval = DEFAULT_TICK_INTERVAL;
+    this.tickInterval = tickInterval;
 
     document.addEventListener('keydown', (e) => {
       switch (e.key) {
@@ -74,16 +75,7 @@ export class Game {
     this.stop();
     this._message(`Game over.`);
     
-    let restartAfter = 5;
-    const restart = setInterval(() => {
-      restartAfter--;
-      if (restartAfter > 0) {
-        this._message(`The game restarts after ${restartAfter}s...`);
-      } else {
-        clearInterval(restart);
-        this.reset();
-      }
-    }, 1000);
+    // TODO:
   }
   start() {
     if (!this.isPlaying) {
@@ -92,19 +84,7 @@ export class Game {
 
       this.tick = setInterval(() => {
         const { head, footprint, grown } = this.snake.move();
-        if (this.board.includes(...head)
-          && this.board.includes(...footprint)
-          && !this.snake.hasTailOf(...head)) {
-          this.board.setBlockAs(...head, BlockType.SNAKE);
-          if (!grown) this.board.setBlockAs(...footprint, BlockType.EMPTY);
-
-          if (this.snake.hasEaten(...this.food)) {
-            this.gainPoint();
-            this.generateSnakeFood();
-          }
-        } else {
-          this.gameOver();
-        }
+        // TODO:
         this.board.render();
       }, this.tickInterval);
     }
