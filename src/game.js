@@ -3,8 +3,8 @@ import { Board } from './component/board.js';
 import { BlockType } from './component/boardBlock.js';
 import { Snake, SnakeDirection } from './component/snake.js';
 
-const DEFAULT_TICK_INTERVAL = 500;
-const DEFAULT_SNAKE_LENGTH_TO_WIN = 40;
+const DEFAULT_TICK_INTERVAL = 300;
+const DEFAULT_SNAKE_LENGTH_TO_WIN = 50;
 
 const GameState = {
   IDLE: 'idle',
@@ -103,6 +103,7 @@ export class Game {
       this.state = GameState.RUNNING;
       this.generateSnakeFood();
       this.gainPoint(0);
+      this.generateSnakeFood();
 
       this.tick = setInterval(() => {
         const { head, footprint, grown } = this.snake.move();
