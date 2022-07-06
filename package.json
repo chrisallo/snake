@@ -1,0 +1,23 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "Snake is a well-known classic arcade game that a little snake grows by eating dots in a tessellated map. This project is designed for training purpose so it's basically incomplete. You can build up the project by branching out from the `main` branch to complete the game.",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx http-server -c-1 -p 8020"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisallo/snake.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrisallo/snake/issues"
+  },
+  "homepage": "https://github.com/chrisallo/snake#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

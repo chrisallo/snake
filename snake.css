@@ -1,0 +1,44 @@
+
+body {
+  font-family:Verdana;
+  font-size:13px;
+  color:#333;
+  background:#333;
+  text-align:center;
+}
+#message {
+  text-align: center;
+  color: #fff;
+  padding: 12px 0;
+}
+.point {
+  color:#fff;
+  margin-top:20px;
+}
+.row {
+  height:24px;
+  padding:0;
+  margin:0;
+}
+.block {
+  display:inline-block;
+  width:24px;
+  height:24px;
+  border:1px #ddd solid;
+  margin-right:-1px;
+}
+.block-empty {
+  background:#fff;
+}
+.block-snake {
+  background:#292;
+}
+.block-snake-head {
+  background:#070;
+}
+.block-apple {
+  background:#f74;
+}
+.block-bomb {
+  background:#666;
+}
