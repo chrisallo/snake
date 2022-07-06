@@ -4,33 +4,45 @@ import { BlockType } from './component/boardBlock.js';
 import { Snake, SnakeDirection } from './component/snake.js';
 
 const INITIAL_GAME_SPEED = 500;
+const DEFAULT_SNAKE_LENGTH_TO_WIN = 40;
+
+const GameState = {
+  IDLE: 'idle',
+  RUNNING: 'running',
+  PAUSED: 'paused',
+  COMPLETE: 'complete',
+};
 
 export class Game {
-  constructor() {
+  constructor({
+    pointToWin = DEFAULT_SNAKE_LENGTH_TO_WIN,
+  }) {
     this.board = new Board({});
     this.snake = null;
     this.reset();
 
     this.point = 0;
+    this.pointToWin = pointToWin;
+
     this.speed = INITIAL_GAME_SPEED;
     this.tick = null;
 
     document.addEventListener('keydown', (e) => {
       switch (e.key) {
         case ' ':
-          this.start();
+          if (this.isIdle) this.start();
           break;
         case 'ArrowUp':
-          this.snake.turn(SnakeDirection.UP);
+          if (this.isPlaying) this.snake.turn(SnakeDirection.UP);
           break;
         case 'ArrowDown':
-          this.snake.turn(SnakeDirection.DOWN);
+          if (this.isPlaying) this.snake.turn(SnakeDirection.DOWN);
           break;
         case 'ArrowLeft':
-          this.snake.turn(SnakeDirection.LEFT);
+          if (this.isPlaying) this.snake.turn(SnakeDirection.LEFT);
           break;
         case 'ArrowRight':
-          this.snake.turn(SnakeDirection.RIGHT);
+          if (this.isPlaying) this.snake.turn(SnakeDirection.RIGHT);
           break;
       }
     });
@@ -38,11 +50,19 @@ export class Game {
   _message(content) {
     document.getElementById('message').innerHTML = content;
   }
-  get isPlaying() {
-    return !!this.tick;
+  get isIdle() {
+    return this.state === GameState.IDLE;
   }
-  gainPoint() {
-    this._message(`${this.point} points.`);
+  get isPlaying() {
+    return this.state === GameState.RUNNING;
+  }
+  gainPoint(inc = 1) {
+    this.point += inc;
+    this._message(`You've got ${this.point} points.`);
+    if (this.point >= this.pointToWin) {
+      this.stop();
+      this._message(`Mission complete!`);
+    }
   }
   gameOver() {
     this.stop();
@@ -50,9 +70,9 @@ export class Game {
     
     let restartAfter = 5;
     const restart = setInterval(() => {
+      restartAfter--;
       if (restartAfter > 0) {
-        restartAfter--;
-        this._message(`Game over. The game restarts after ${restartAfter}s...`);
+        this._message(`The game restarts after ${restartAfter}s...`);
       } else {
         clearInterval(restart);
         this.reset();
@@ -61,7 +81,10 @@ export class Game {
   }
   start() {
     if (!this.isPlaying) {
-      this.gainPoint();
+      this.state = GameState.RUNNING;
+      this.point = 0;
+      this.gainPoint(0);
+
       this.tick = setInterval(() => {
         const { head, footprint } = this.snake.move();
         if (this.board.includes(...head)
@@ -78,11 +101,13 @@ export class Game {
   }
   stop() {
     if (this.isPlaying) {
+      this.state = GameState.PAUSED;
       clearInterval(this.tick);
       this.tick = null;
     }
   }
   reset() {
+    this.state = GameState.IDLE;
     this.board.reset();
     this.snake = new Snake({
       startX: Math.floor(this.board.width / 2),
