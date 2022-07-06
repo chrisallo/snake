@@ -2,7 +2,6 @@
 export const BlockType = {
   EMPTY: 'empty',
   SNAKE: 'snake',
-  SNAKE_HEAD: 'snake-head',
   FOOD: 'food',
   BOMB: 'bomb',
 };
