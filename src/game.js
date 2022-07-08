@@ -61,6 +61,21 @@ export class Game {
   generateSnakeFood() {
     if (this.isPlaying) {
       // TODO:
+      console.log('hi');
+
+      let food_x = Math.floor(Math.random() * 25 + 1); 
+      let food_y = Math.floor(Math.random() * 25 + 1); 
+
+      console.log(food_x);
+      
+      this.board.setBlockAs(food_x, food_y, BlockType.FOOD);
+
+      /*
+      if(){
+        this.board.setBlockAs(food_x, food_y, BlockType.FOOD);
+      }
+      */
+
     }
   }
   gainPoint(inc = 1) {
@@ -76,6 +91,20 @@ export class Game {
     this._message(`Game over.`);
     
     // TODO:
+    
+    var timeleft = 5;
+
+    var reset_Timer = setInterval(function(){
+      document.getElementById(message).innerHTML = timeleft + " seconds remaining for reset";
+      timeleft -= 1;
+      if(timeleft <= 0){
+        clearInterval(reset_Timer);
+        this.reset();
+      }
+    }, 1000);
+    
+    //setTimeout(reset, 3000);
+    
   }
   start() {
     if (!this.isPlaying) {
@@ -83,9 +112,19 @@ export class Game {
       this.gainPoint(0);
       this.generateSnakeFood();
 
+      //console.log('hellohello');
+
       this.tick = setInterval(() => {
         const { head, footprint, grown } = this.snake.move();
         // TODO:
+
+        //console.log('hellohello');
+
+        //this.board.setBlockAs(nextX, nextY, BlockType.SNAKE);
+        //this.board.setBlockAs(lastX, lastY, BlockType.SNAKE);
+
+        
+
         this.board.render();
       }, this.tickInterval);
     }
