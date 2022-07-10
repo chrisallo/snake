@@ -67,6 +67,8 @@ export class Game {
       let food_y = Math.floor(Math.random() * 25 + 1); 
 
       console.log(food_x);
+
+
       
       this.board.setBlockAs(food_x, food_y, BlockType.FOOD);
 
@@ -117,12 +119,10 @@ export class Game {
       this.tick = setInterval(() => {
         const { head, footprint, grown } = this.snake.move();
         // TODO:
-
-        //console.log('hellohello');
-
-        //this.board.setBlockAs(nextX, nextY, BlockType.SNAKE);
-        //this.board.setBlockAs(lastX, lastY, BlockType.SNAKE);
-
+          
+        console.log(head);
+        console.log(footprint);
+        console.log(grown);
         
 
         this.board.render();

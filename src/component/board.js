@@ -15,7 +15,7 @@ export class Board {
     for (let i = 0; i < this.width; i++) {
       const row = [];
       for (let j = 0; j < this.height; j++) {
-        const block = new BoardBlock();
+        const block = new BoardBlock();        
         row.push(block);
       }
       this.blocks.push(row);
@@ -26,7 +26,7 @@ export class Board {
   includes(x, y) {
     return !!this.blocks[y] && !!this.blocks[y][x];
   }
-  setBlockAs(x, y, blockType) {
+  setBlockAs(x, y, blockType) {    
     this.blocks[y][x].type = blockType;
   }
   reset() {
@@ -43,14 +43,14 @@ export class Board {
         const row = document.createElement('div');
         row.className = 'row';
         for (let j = 0; j < this.height; j++) {
-          row.appendChild(this.blocks[i][j].render());
+          row.appendChild(this.blocks[i][j].render(i,j));
         }
         this._dom.appendChild(row);
       }
     } else {
       for (let i = 0; i < this.width; i++) {
         for (let j = 0; j < this.height; j++) {
-          this.blocks[i][j].render();
+          this.blocks[i][j].render(i,j);
         }
       }
     }
