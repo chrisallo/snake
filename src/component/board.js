@@ -26,13 +26,17 @@ export class Board {
   includes(x, y) {
     return !!this.blocks[y] && !!this.blocks[y][x];
   }
+  getBlock(x, y) {
+    return this.includes(x, y) ? this.blocks[y][x] : null;
+  }
   setBlockAs(x, y, blockType) {
-    this.blocks[y][x].type = blockType;
+    const block = this.getBlock(x, y);
+    if (block) block.type = blockType;
   }
   reset() {
     for (let i = 0; i < this.width; i++) {
       for (let j = 0; j < this.height; j++) {
-        this.blocks[i][j].type = BlockType.EMPTY;
+        this.blocks[j][i].type = BlockType.EMPTY;
       }
     }
   }
@@ -43,14 +47,14 @@ export class Board {
         const row = document.createElement('div');
         row.className = 'row';
         for (let j = 0; j < this.height; j++) {
-          row.appendChild(this.blocks[i][j].render());
+          row.appendChild(this.blocks[j][i].render());
         }
         this._dom.appendChild(row);
       }
     } else {
       for (let i = 0; i < this.width; i++) {
         for (let j = 0; j < this.height; j++) {
-          this.blocks[i][j].render();
+          this.blocks[j][i].render();
         }
       }
     }

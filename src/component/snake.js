@@ -20,11 +20,9 @@ export class Snake {
     for (let i = 0; i < this.length; i++) {
       this.tail.push([startX, startY + i]);
     }
+
+    this.nextDirection = this.direction;
     this.willGrow = false;
-  }
-  hasTailOf(x, y) {
-    return this.tail.slice(1)
-      .some(([tailX, tailY]) => tailX === x && tailY === y);
   }
   hasEaten(x, y) {
     const [headX, headY] = this.tail[0];
@@ -44,7 +42,7 @@ export class Snake {
   }
   turn(direction) {
     if (!this.isGoingOppositeOf(direction)) {
-      this.direction = direction;
+      this.nextDirection = direction;
     }
   }
   grow() {
@@ -55,7 +53,7 @@ export class Snake {
     const [lastX, lastY] = !grown ? this.tail.pop() : this.tail[this.tail.length - 1];
     const [firstX, firstY] = this.tail[0];
     let nextX, nextY;
-    switch (this.direction) {
+    switch (this.nextDirection) {
       case SnakeDirection.UP: {
         [nextX, nextY] = [firstX, firstY - 1];
         break;
@@ -73,6 +71,7 @@ export class Snake {
         break;
       }
     }
+    this.direction = this.nextDirection;
     this.tail.unshift([nextX, nextY]);
     this.willGrow = false;
     return {
