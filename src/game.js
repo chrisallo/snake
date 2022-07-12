@@ -62,17 +62,16 @@ export class Game {
     if (this.isPlaying) {
       const emptyBlocks = [];
       for (const i in this.board.blocks) {
-        const row = this.board.blocks[i];
-        for (const j in row) {
-          const block = row[j];
-          if (block.type === BlockType.EMPTY) {
-            emptyBlocks.push([parseInt(i), parseInt(j)]);
+        for (const j in this.board.blocks[i]) {
+          const block = this.board.getBlock(j, i);
+          if (block && block.type === BlockType.EMPTY) {
+            emptyBlocks.push(block);
           }
         }
       }
       const random = Math.floor(Math.random() * emptyBlocks.length);
-      const [x, y] = this.food = emptyBlocks[random];
-      this.board.setBlockAs(x, y, BlockType.FOOD);
+      this.food = emptyBlocks[random];
+      this.food.type = BlockType.FOOD;
     }
   }
   gainPoint(inc = 1) {
@@ -103,20 +102,22 @@ export class Game {
       this.state = GameState.RUNNING;
       this.generateSnakeFood();
       this.gainPoint(0);
-      this.generateSnakeFood();
 
       this.tick = setInterval(() => {
         const { head, footprint, grown } = this.snake.move();
-        if (this.board.includes(...head)
-          && this.board.includes(...footprint)
-          && !this.snake.hasTailOf(...head)) {
-          this.board.setBlockAs(...head, BlockType.SNAKE);
-          if (!grown) this.board.setBlockAs(...footprint, BlockType.EMPTY);
-          
-          if (this.snake.hasEaten(...this.food)) {
-            this.snake.grow();
-            this.gainPoint();
-            this.generateSnakeFood();
+        const eatenBlock = this.board.getBlock(...head);
+        if (eatenBlock) {
+          if (eatenBlock.type !== BlockType.SNAKE) {
+            this.board.setBlockAs(...head, BlockType.SNAKE);
+            if (!grown) this.board.setBlockAs(...footprint, BlockType.EMPTY);
+            
+            if (eatenBlock === this.food) {
+              this.snake.grow();
+              this.gainPoint();
+              this.generateSnakeFood();
+            }
+          } else {
+            this.gameOver();
           }
         } else {
           this.gameOver();

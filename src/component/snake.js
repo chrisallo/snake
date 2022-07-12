@@ -20,7 +20,6 @@ export class Snake {
     for (let i = 0; i < this.length; i++) {
       this.tail.push([startX, startY + i]);
     }
-
     this.nextDirection = this.direction;
     this.willGrow = false;
   }
@@ -51,23 +50,23 @@ export class Snake {
   move() {
     const grown = this.willGrow;
     const [lastX, lastY] = !grown ? this.tail.pop() : this.tail[this.tail.length - 1];
-    const [firstX, firstY] = this.tail[0];
+    const [currentX, currentY] = this.tail[0];
     let nextX, nextY;
     switch (this.nextDirection) {
       case SnakeDirection.UP: {
-        [nextX, nextY] = [firstX, firstY - 1];
+        [nextX, nextY] = [currentX, currentY - 1];
         break;
       }
       case SnakeDirection.DOWN: {
-        [nextX, nextY] = [firstX, firstY + 1];
+        [nextX, nextY] = [currentX, currentY + 1];
         break;
       }
       case SnakeDirection.LEFT: {
-        [nextX, nextY] = [firstX - 1, firstY];
+        [nextX, nextY] = [currentX - 1, currentY];
         break;
       }
       case SnakeDirection.RIGHT: {
-        [nextX, nextY] = [firstX + 1, firstY];
+        [nextX, nextY] = [currentX + 1, currentY];
         break;
       }
     }

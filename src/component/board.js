@@ -13,21 +13,21 @@ export class Board {
     this.height = height;
     this.blocks = [];
     for (let i = 0; i < this.width; i++) {
-      const row = [];
+      const column = [];
       for (let j = 0; j < this.height; j++) {
         const block = new BoardBlock();
-        row.push(block);
+        column.push(block);
       }
-      this.blocks.push(row);
+      this.blocks.push(column);
     }
     this._dom = null;
     this.reset();
   }
   includes(x, y) {
-    return !!this.blocks[y] && !!this.blocks[y][x];
+    return !!this.blocks[x] && !!this.blocks[x][y];
   }
   getBlock(x, y) {
-    return this.includes(x, y) ? this.blocks[y][x] : null;
+    return this.includes(x, y) ? this.blocks[x][y] : null;
   }
   setBlockAs(x, y, blockType) {
     const block = this.getBlock(x, y);
@@ -36,17 +36,17 @@ export class Board {
   reset() {
     for (let i = 0; i < this.width; i++) {
       for (let j = 0; j < this.height; j++) {
-        this.blocks[j][i].type = BlockType.EMPTY;
+        this.blocks[i][j].type = BlockType.EMPTY;
       }
     }
   }
   render() {
     if (!this._dom) {
       this._dom = document.getElementById('board');
-      for (let i = 0; i < this.width; i++) {
+      for (let i = 0; i < this.height; i++) {
         const row = document.createElement('div');
         row.className = 'row';
-        for (let j = 0; j < this.height; j++) {
+        for (let j = 0; j < this.width; j++) {
           row.appendChild(this.blocks[j][i].render());
         }
         this._dom.appendChild(row);
@@ -54,7 +54,7 @@ export class Board {
     } else {
       for (let i = 0; i < this.width; i++) {
         for (let j = 0; j < this.height; j++) {
-          this.blocks[j][i].render();
+          this.blocks[i][j].render();
         }
       }
     }
