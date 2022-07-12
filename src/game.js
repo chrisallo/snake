@@ -63,15 +63,29 @@ export class Game {
       // TODO:
       console.log('hi');
 
-      let food_x = Math.floor(Math.random() * 25 + 1); 
-      let food_y = Math.floor(Math.random() * 25 + 1); 
-
-      console.log(food_x);
-
+      //let food_x = Math.floor(Math.random() * this.board.width + 1); 
+      //let food_y = Math.floor(Math.random() * this.board.height + 1); 
 
       
-      this.board.setBlockAs(food_x, food_y, BlockType.FOOD);
 
+      var emptyBlocks = [];
+
+      for(let i=0; i< this.board.width; i++){
+        for (let j = 0; j < this.board.height; j++){
+          if(this.board.blocks[j][i].type === BlockType.EMPTY){
+            emptyBlocks.push([j, i]);
+          }
+        }
+      }
+      
+      //console.log(emptyBlocks);
+      
+      var [y, x] = emptyBlocks[Math.floor(Math.random() * emptyBlocks.length )]; 
+      console.log(y, x);
+
+
+      this.board.setBlockAs(x, y, BlockType.FOOD);
+      this.food = [x, y];
       /*
       if(){
         this.board.setBlockAs(food_x, food_y, BlockType.FOOD);
@@ -96,8 +110,9 @@ export class Game {
     
     var timeleft = 5;
 
-    var reset_Timer = setInterval(function(){
-      document.getElementById(message).innerHTML = timeleft + " seconds remaining for reset";
+    var reset_Timer = setInterval(() => {
+      //document.getElementById(message).innerHTML = timeleft + " seconds remaining for reset";
+      this._message(timeleft + 'second left');
       timeleft -= 1;
       if(timeleft <= 0){
         clearInterval(reset_Timer);
@@ -120,10 +135,31 @@ export class Game {
         const { head, footprint, grown } = this.snake.move();
         // TODO:
           
-        console.log(head);
-        console.log(footprint);
-        console.log(grown);
+        //console.log(head);
+        //console.log(footprint);
+        //console.log(grown);
+
+
         
+        if(this.board.includes(head[0],head[1])){
+          if(this.board.blocks[head[1]][head[0]].type === BlockType.SNAKE){
+            this.gameOver();
+          } else {
+            this.board.setBlockAs(head[0],head[1] , BlockType.SNAKE);
+            this.board.setBlockAs(footprint[0],footprint[1] , BlockType.EMPTY);
+            if(head[0]===this.food[0] && head[1]===this.food[1]){
+              this.generateSnakeFood();
+              this.snake.grow();
+              this.gainPoint();
+            }
+          }
+        }else{
+          this.gameOver()
+
+        }
+
+
+
 
         this.board.render();
       }, this.tickInterval);
