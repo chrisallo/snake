@@ -60,18 +60,7 @@ export class Game {
   }
   generateSnakeFood() {
     if (this.isPlaying) {
-      const emptyBlocks = [];
-      for (const i in this.board.blocks) {
-        for (const j in this.board.blocks[i]) {
-          const block = this.board.getBlock(j, i);
-          if (block && block.type === BlockType.EMPTY) {
-            emptyBlocks.push(block);
-          }
-        }
-      }
-      const random = Math.floor(Math.random() * emptyBlocks.length);
-      this.food = emptyBlocks[random];
-      this.food.type = BlockType.FOOD;
+      // TODO:
     }
   }
   gainPoint(inc = 1) {
@@ -86,16 +75,7 @@ export class Game {
     this.stop();
     this._message(`Game over.`);
     
-    let restartAfter = 5;
-    const restart = setInterval(() => {
-      restartAfter--;
-      if (restartAfter > 0) {
-        this._message(`The game restarts after ${restartAfter}s...`);
-      } else {
-        clearInterval(restart);
-        this.reset();
-      }
-    }, 1000);
+    // TODO:
   }
   start() {
     if (!this.isPlaying) {
@@ -105,23 +85,7 @@ export class Game {
 
       this.tick = setInterval(() => {
         const { head, footprint, grown } = this.snake.move();
-        const eatenBlock = this.board.getBlock(...head);
-        if (eatenBlock) {
-          if (eatenBlock.type !== BlockType.SNAKE) {
-            this.board.setBlockAs(...head, BlockType.SNAKE);
-            if (!grown) this.board.setBlockAs(...footprint, BlockType.EMPTY);
-            
-            if (eatenBlock === this.food) {
-              this.snake.grow();
-              this.gainPoint();
-              this.generateSnakeFood();
-            }
-          } else {
-            this.gameOver();
-          }
-        } else {
-          this.gameOver();
-        }
+        // TODO:
         this.board.render();
       }, this.tickInterval);
     }
