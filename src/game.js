@@ -19,8 +19,8 @@ export class Game {
     pointToWin = DEFAULT_SNAKE_LENGTH_TO_WIN,
   }) {
     this.board = new Board({});
-    this.snake = null;
-    this.food = [-1, -1];
+    this.snake = null; // as Snake
+    this.food = null; // as BoardBlock
     this.reset();
 
     this.point = 0;

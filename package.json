@@ -1,6 +1,6 @@
 {
   "name": "snake",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Snake is a well-known classic arcade game that a little snake grows by eating dots in a tessellated map. This project is designed for training purpose so it's basically incomplete. You can build up the project by branching out from the `main` branch to complete the game.",
   "main": "index.js",
   "scripts": {
